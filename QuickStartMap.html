@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <title>University of Oregon Mapping</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>    
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        /* Insert the additional CSS code here between the <style> tags  (Part I.4)   */
+         body { margin:0; padding:0; }
+     #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+  </head>
+
+  <body>
+    <!--  Insert the map div here in the <body> of the page  (Part I)  -->
+   <div id='map'></div>
+    <!--  Insert the title div here (part V) -->
+   <div id='title'>
+     <h1>My Map of Portland</h1>
+     <h2>By: Connor Kirby</h2>
+   </div>
+    #title { z-index: 9999;
+      background-color:blue;
+      opacity: 80%;
+      text-align: center
+    }
+    
+    <script>
+        // Insert the JavaScript within the <script> tags, within the body   
+        // Start with the Mapbox access token here (Part 2.1)
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2tpcmJ5NCIsImEiOiJjbTkxdWRrbGkwNHE0MmlwcXloNTR0Y2R4In0.intceuzVYFpUqb8JoSM2qA';
+        // Then initialize the map here (Part 2.2)
+    var map = new mapboxgl.Map({
+     container: 'map', // id of a div on your page, where the map will be inserted
+     style: 'mapbox://styles/mapbox/standard-satellite', // stylesheet location
+     center: [-122.6788, 45.5212], // starting position [lng, lat] eg. [-122.6788, 45.5212]
+     zoom: 11 // starting zoom 
+ });
+      
+      
+  var popup = new mapboxgl.Popup({ offset: 25 })
+  .setHTML('Hello World. Welcome to Portland!');
+    
+    var marker = new mapboxgl.Marker({color:'green'})
+   .setLngLat([-122.6788, 45.5212])
+   .setPopup(popup)
+   .addTo(map);
+      
+    var marker2 = new mapboxgl.Marker({color:'yellow'})
+    .setLngLat([-122.71,45.5])
+    .setHTML('<a href="https://japanesegarden.org/">Portland Japanese Garden</a>')
+    .addTo(map);
+      
+    var popup_layer = new mapboxgl.Popup({closeOnMove: true})
+    .setLngLat([-122.64, 45.4])
+    .setHTML('<h1>Hi Portland!</h!>')
+    .addTo(map);
+        // Add any other variables such as markers here (part III)
+        // Add optional advanced "On load" function here
+        
+    </script>
+  </body>
+
+</html>
