@@ -18,21 +18,34 @@
            -webkit-user-select: none;
           -moz-user-select: none;
            -ms-user-select: none;
-               user-select: none; }
+               user-select: none; 
+         }
 		 
       .map {
           position: absolute;
           top: 0;
           bottom: 0;
-          width: 100%; }
+          width: 100%; 
+         }
 
+       #title { z-index: 9999;
+          background-color:white;
+          opacity: 80%;
+          text-align: center 
+         } 
+        
       </style>
 </head>
 
 <body>
     <div id="comparison-container">
-      		<div id='owners' class='map'></div>  <!-- div for owners map div -->
-      		<div id='renters' class='map'></div> <!--  div for renters map div -->  
+     <div id='owners' class='map'></div>  <!-- div for owners map div -->
+     <div id='renters' class='map'></div> <!--  div for renters map div -->  
+    </div>
+
+    <div id='title'>
+        <h1>Map of Renters and Home Owners in Portland, OR</h1>
+        <h2>By: C</h2>
     </div>
 
     <script>
