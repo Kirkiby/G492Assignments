@@ -6,7 +6,6 @@
      <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js'></script>
      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css' rel='stylesheet' />
-
      <!-- JS and CSS for the swipe plugin -->
      <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.4.0/mapbox-gl-compare.js'></script>
      <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.4.0/mapbox-gl-compare.css' type='text/css' />
@@ -27,12 +26,39 @@
           bottom: 0;
           width: 100%; 
          }
-
+        
        #title { z-index: 9999;
           background-color:white;
           opacity: 80%;
           text-align: center 
          } 
+        
+        .LegendContainer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 2;
+            width: 300px;
+            height: 40px;
+            background: rgba(80,80,80, .75);
+            transition: width 2s, height 2s;
+            border-radius: 7px; }
+        
+        .legendItem {
+            margin: 0px;
+            padding-left: 10px;
+            display:inline-block;
+            margin:auto;
+            transform: translate(50%, 50%);
+         }
+        
+        .layerDescription {
+            color: white;
+            padding-left: 10px;
+         }
+        
+        .renter { color:hsl(210, 90%, 32%); }
+        .owner { color:hsl(210, 90%, 32%); }
         
       </style>
 </head>
@@ -42,12 +68,24 @@
      <div id='owners' class='map'></div>  <!-- div for owners map div -->
      <div id='renters' class='map'></div> <!--  div for renters map div -->  
     </div>
-
+    
     <div id='title'>
         <h1>Map of Renters and Home Owners in Portland, OR</h1>
-        <h2>By: C</h2>
+        <h3>Home Owners are on the left side of the map, and renters are on the right side of the map</h3>
+        <h2>By: Connor Kirby</h2>
     </div>
-
+    
+    <div class="LegendContainer">
+        <div class="legendItem">
+            <span class="owner"></span>
+            <span class="layerDescription">Owners</span>
+          </div>
+        <div class="legendItem">
+            <span class="renter"></span>
+            <span class="layerDescription">Renters</span>
+          </div>
+    </div>
+    
     <script>
     //add your Mapbox access token and map variable here!
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2tpcmJ5NCIsImEiOiJjbTkxdWRrbGkwNHE0MmlwcXloNTR0Y2R4In0.intceuzVYFpUqb8JoSM2qA';
@@ -73,7 +111,7 @@
                 "hsl(203, 47%, 82%)", 22.0,
                 "hsl(202, 57%, 63%)", 27.0,
                 "#3182bd", 32.0,
-                 "hsl(210, 90%, 32%)" ],
+                "hsl(210, 90%, 32%)" ],
                 "fill-opacity": 0.7 } 
         }); });
 
@@ -102,33 +140,31 @@
                  "hsl(210, 90%, 32%)"],
                  "fill-opacity": 0.7 }
      }); });
-
+    
     var popup = new mapboxgl.Popup({
         closeButton: false,
         closeOnClick: false });
-
-
+    
     ownerMap.on('mousemove', 'Owner Data', function (e) {
         
          // Change the cursor style as a UI indicator.
          ownerMap.getCanvas().style.cursor = 'grab';
     var coordinates = e.lngLat;
     var description = e.features[0].properties.Own;
-
+        
          // Populate the popup and set its coordinates
          // based on the feature found.
          popup.setLngLat([-122.673281, 45.521009])
               .setHTML(" Home Owners in Portland, OR " + description + "%")
               .addTo(ownerMap); });
-
+        
     ownerMap.on('mouseleave', 'Owner Data', function () {
          ownerMap.getCanvas().style.cursor = '';
          popup.remove();
      });
-
-
-         renterMap.on('mousemove', 'Renter Data', function (e) {
         
+         renterMap.on('mousemove', 'Renter Data', function (e) {
+            
          // Change the cursor style as a UI indicator.
          renterMap.getCanvas().style.cursor = 'cell';
     
