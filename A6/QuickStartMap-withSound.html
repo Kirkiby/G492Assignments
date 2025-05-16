@@ -21,7 +21,7 @@
         #map { position:absolute; top:0; bottom:0; width:100%; }
         
         /* Overrides the pop-up width slightly bigger min-width than the default Mapbox CSS*/
-         .mapboxgl-popup {
+        .mapboxgl-popup {
             min-width: 325px;
             /*add the css for the popup font here */
             font-family: "Underdog", system-ui;  
@@ -99,6 +99,7 @@ var popup3_content = '<h2>Press play to listen to a bison eating</h2><br>';
     popup3_content += '<img class="popupImage" alt="A heard of bison gathered around a part of the Gibbon River in winter" src="https://www.nps.gov/yell/learn/photosmultimedia/images/ndh-yell-bison-gibbon_2.jpg?maxwidth=1300&maxheight=1300&autorotate=false&format=webp">' ;
 var popup3 = new mapboxgl.Popup({ minWidth:'300px' })
     .setHTML(popup3_content);
+    
     /***  END POPUPS  ***/  
 
     /***  MARKERS  ***/
@@ -119,6 +120,10 @@ var popup3 = new mapboxgl.Popup({ minWidth:'300px' })
       .setLngLat([-110.74524187568,44.706216445069]) // Yellowstone
       .setPopup(popup3)
       .addTo(map);
+        
+    marker3.on('load', function() {
+        paint: {hsl(100,050,010)}
+    })
     /***  END MARKERS  ***/
 
     /***  LISTENERS  ***/
@@ -146,6 +151,7 @@ var popup3 = new mapboxgl.Popup({ minWidth:'300px' })
     });
     //listeners go here
     /***  END LISTENERS  ***/
+    map.getCanvas().style.cursor = 'crosshair';
     </script>
 </body>
 
