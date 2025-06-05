@@ -9,8 +9,19 @@
     <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet" />
     
     <style>
-         body { margin:0; padding:0; }
-         #map { position:absolute; top:0; bottom:0; width:100%; }
+        
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        
+        #title { z-index: 0; 
+            background-color:#0000FF44;
+/*            opacity: 70%;*/
+            position:absolute;
+            width: 100%;
+            text-align: center;
+        }
+            
+             
     </style> 
 
 </head>
@@ -18,6 +29,12 @@
 
 <body> 
     <div id='map'></div>
+    
+    <div id='title'>
+        <h1>Plant Hardiness Zones of Oregon</h1>
+    </div>
+
+    
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoiY2tpcmJ5NCIsImEiOiJjbTkxdWRrbGkwNHE0MmlwcXloNTR0Y2R4In0.intceuzVYFpUqb8JoSM2qA';
         var map = new mapboxgl.Map({
@@ -35,6 +52,37 @@
         .setPopup(popup)
         .addTo(map);
         
+        
+         map.on('click', 'georef-united-states-of-ameri-1tyr8h copy', (e) => {
+             console.log(e)
+             const coordinates = e.features[0].geometry.coordinates;
+             
+            // Create a 'LngLatBounds' with both corners at the first coordinate.
+            const bounds = new mapboxgl.LngLatBounds(
+                coordinates[0],
+                coordinates[0]
+            );
+
+            // Extend the 'LngLatBounds' to include every coordinate in the bounds result.
+            for (const coord of coordinates) {
+                bounds.extend(coordinates);
+            }
+
+            map.fitBounds(bounds, {
+                padding: 20
+            });
+             
+             
+         });
+        
+//       map.on('click', 'phzm-us-zones-shp-2023-cqr9f4', (e) => {
+//             console.log(e.lngLat)
+//           
+//           popup.setLngLat(e.lngLat);
+//           popup.setHTML("zone:" + e.features[0].properties.zone).addTo(map);
+//        
+//        });
+//        
     </script> 
     
 
