@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Plant Hardiness Scale</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet" />
+    
+    <style>
+        
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        
+        #title { z-index: 0; 
+            background-color:#15eb1590;
+            /* opacity: 70%;*/
+            position:absolute;
+            width: 100%;
+            text-align: center;
+        }
+        #legend { z-index: 0;
+            background-color:#ffffff;
+            position:absolute;
+            bottom: 1px;
+            width: 100%;
+            text-align: center;}
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th {
+            border: 1px solid #000000;
+        }
+        
+        .sidenav {
+            height: 100%; /* 100% Full-height */
+            width: 150px; /* 0 width - change this with JavaScript */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Stay on top */
+            top: 0;
+            left: 0;
+            background-color: #111; /* Black*/
+            overflow-x: hidden; /* Disable horizontal scroll */
+            padding-top: 60px; /* Place content 60px from the top */
+        }
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+        }
+        .sidenav a:hover {
+            color: #f1f1f1;
+            }
+        .main {
+            margin-left: 50px;
+        }
+        @media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+        .sidenav a {font-size: 18px;}
+        }
+    </style> 
+</head>
+
+<body> 
+    <div id='map'></div>
+    <div id='title'>
+        <h1><b>Plant Hardiness Zones of Oregon</b></h1>
+    </div>
+    <div id='legend'>
+        <table>
+        <tr><i>~Legend~</i></tr>
+        <tr>
+            <th>Temp (F)</th>
+            <th>-20 to -15</th>
+            <th>-15 to -10</th>
+            <th>-10 to -5</th>
+            <th>-5 to 0</th>
+            <th>0 to 5</th>
+            <th>5 to 10</th>
+            <th>10 to 15</th>
+            <th>15 to 20</th>
+            <th>20 to 25</th>
+            <th>25 to 30</th>
+            <th>30 to 35</th>
+        </tr>
+        <tr>
+            <th>Zone</th>
+            <td bgcolor= "#73a1ff">5a</td>
+            <td bgcolor= "#5ec9e0">5b</td>
+            <td bgcolor= "#47ba47">6a</td>
+            <td bgcolor= "#78c756">6b</td>
+            <td bgcolor= "#abd669">7a</td>
+            <td bgcolor= "#cddb70">7b</td>
+            <td bgcolor= "#edda85">8a</td>
+            <td bgcolor= "#ebcb57">8b</td>
+            <td bgcolor= "#dbb64f">9a</td>
+            <td bgcolor= "#f5b678">9b</td>
+            <td bgcolor= "#eb9c36">10a</td>
+        </tr>
+        </table>
+    </div>    
+    
+    <div class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Info</a>
+        <a href="#">Info2</a>
+    </div>
+    
+    <h2>text</h2>
+    <p>click here</p>
+        <span style="font-size:30px;cursor:pointer" onclick="closeNav()">&#9776; open</span>
+
+    <div id="main">
+    
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2tpcmJ5NCIsImEiOiJjbTkxdWRrbGkwNHE0MmlwcXloNTR0Y2R4In0.intceuzVYFpUqb8JoSM2qA';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/ckirby4/cmax1wzvx000201rk6t0h64ny',
+            center: [-120.5542, 43.8041],
+            zoom: 6.75
+        });
+        
+        function openNav() {
+            document.getElementById("mySidenav").style.display = "block";
+        }
+        function closeNav() {
+            document.getElementById("mySidenav").style.display = "none";
+        }
+        
+        var popup = new mapboxgl.Popup({closeButton: false}) // ADDED to remove 'x' from the popup
+        .setHTML('Curry County');
+        
+        var cmarker = new mapboxgl.Marker()
+        .setLngLat([-124.1590, 42.4680])
+        .setPopup(popup)
+        .addTo(map);
+        
+        // You can set this up in studio, // use one of the versions of the county that is set to the type FILL. 
+        // This way there is a polygon that can be clicked on.
+        // I am using JS to override the settings on the fill layer.
+        // If you set up 'georef-united-states-of-ameri-1tyr8h (2)' or another layer like this in Studio, you can remove this function from the code.
+        // Ensure the layer is visible.
+        // Make sure the layer is not filtered so that all the countries available to interaction. If they are filtered out, they can't be clicked on.
+        // Set the layer to have any fill color, and set the opacity to 0. 
+        // Now you have a transparent  polygon that we can interact with.
+        map.on('load', () => { 
+            map.setLayoutProperty('georef-united-states-of-ameri-1tyr8h (2)', 'visibility', 'visible');
+            map.setFilter('georef-united-states-of-ameri-1tyr8h (2)', null) 
+            map.setPaintProperty('georef-united-states-of-ameri-1tyr8h (2)', 'fill-color', '#000');
+            map.setPaintProperty('georef-united-states-of-ameri-1tyr8h (2)', 'fill-opacity', 0);
+        });
+        // Click function for the transparent county layer
+        map.on('click', 'georef-united-states-of-ameri-1tyr8h (2)', function (e) {
+            // console.log(e)  // for logging and debugging
+            
+            // get bounding box of selected feature
+            bounds = getPolygonBoundingBox(e.features[0].geometry.coordinates);
+            map.fitBounds(bounds, {
+                padding: 20
+            });  
+        });
+        // tooltip for Hardiness zone value
+        // see https://github.com/jmersonuo/jmersonuo.github.io/blob/master/Activities/Population-Tutorial/03-Population-Choropleth.md
+        // XII. Adding a popup that opens on hover
+        map.on('mousemove', 'phzm-us-zones-shp-2023-cqr9f4',function (e) {
+            if (e.features.length > 0) {
+                console.log(e.features[0].properties)
+                // Change the cursor style as a UI indicator.
+                map.getCanvas().style.cursor = 'pointer';
+                // set tooltip position and content
+                var coordinates = e.lngLat;
+                var description = "<b>Zone </b>" + e.features[0].properties.zonetitle+"<br>"; // Build and format the popup string
+                description += "Click to zoom to county"
+                // Populate the popup and set its coordinates
+                // based on the value found.
+                popup.setLngLat(coordinates)
+                    .setHTML(description)
+                    .addTo(map);
+            }
+        });
+        map.on('mouseleave', 'phzm-us-zones-shp-2023-cqr9f4',function () { 
+            // Hide tooltip when mouse leaves the layer
+            map.getCanvas().style.cursor = '';
+    	    popup.remove();
+        });
+        // Generic function to get a polygon's bounding box.
+        function getPolygonBoundingBox(arr, bounds = [[], []]) {
+            for (var i = 0; i < arr.length; i++) {
+                if (Array.isArray(arr[i][0][0])){
+                bounds = getPolygonBoundingBox(arr[i], bounds);
+                } else {
+                polygon = arr[i];
+                for (var j = 0; j < polygon.length; j++) {
+                    longitude = polygon[j][0];
+                    latitude = polygon[j][1];
+                    bounds[0][0] = bounds[0][0] < longitude ? bounds[0][0] : longitude;
+                    bounds[1][0] = bounds[1][0] > longitude ? bounds[1][0] : longitude;
+                    bounds[0][1] = bounds[0][1] < latitude ? bounds[0][1] : latitude;
+                    bounds[1][1] = bounds[1][1] > latitude ? bounds[1][1] : latitude;
+                }
+                }
+            }
+            return bounds;
+        }
+    </script> 
+</body>
+</html>
